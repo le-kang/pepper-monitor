@@ -42,10 +42,10 @@
     </p>
     <div ng-if="monitor.message.dialog.input" layout="row">
       <input type="text" flex ng-model="monitor.inputValue">
-      <md-button class="md-raised submit" ng-click="monitor.publish(monitor.message.name, monitor.inputValue)">Submit</md-button>
+      <md-button class="md-raised green" ng-click="monitor.publish(monitor.message.name, monitor.inputValue)">Submit</md-button>
     </div>
     <div ng-if="monitor.message.dialog.buttons" layout="row" layout-wrap>
-      <md-button ng-repeat="button in monitor.message.dialog.buttons" class="md-raised md-{{ button.style }}"
+      <md-button ng-repeat="button in monitor.message.dialog.buttons" class="md-raised {{ button.color }}"
                  ng-click="monitor.publish(monitor.message.name, button.value)">
         {{  button.label }}
       </md-button>

@@ -85,9 +85,19 @@ md-content {
       font-size: 50px !important;
       margin: 15px !important;
 
-      &.submit {
+      &.green {
         background-color: #259b24;
         color: #FFF;
+      }
+
+      &.blue {
+        color: rgba(255, 255, 255, 0.87);
+        background-color: rgb(16, 108, 200);
+      }
+
+      &.red {
+        color: rgb(255,255,255);
+        background-color: rgb(255,87,34);
       }
     }
   }

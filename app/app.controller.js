@@ -8,7 +8,7 @@
   /** @ngIngect */
   function AppController($rootScope, ros, $window, _, $timeout, $mdDialog, $mdToast) {
     var vm = this;
-    var DEFAULT_TIMEOUT = 60000;
+    var DEFAULT_TIMEOUT = 60;
     vm.renderJobs = [];
     vm.message = {};
     vm.publish = publish;
@@ -30,7 +30,7 @@
         var message = _.clone(messages.shift());
         job = createRenderJob(message, timeout);
         vm.renderJobs.push(job);
-        timeout += (message.timeout || DEFAULT_TIMEOUT);
+        timeout += (message.timeout || DEFAULT_TIMEOUT) * 1000;
       }
       // stop displaying last message
       job = $timeout(function() {
