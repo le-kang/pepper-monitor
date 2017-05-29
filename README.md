@@ -2,7 +2,7 @@
 
 The monitor app is only available at pepper's tablet. There is no external access.
 
-The app subscribes to a ROS topic named ```/pepper_monitor/message``` with type of ```std_msgs/String```. It shows the user defined messages after the topic gets published from ROS. A message contains media (emoji expression, image or camera stream) or/and dialog (text, input or buttons). The data published by topic ```/pepper_monitor/message``` is a list of messages for displaying. Each message should have a unique name in order to identify them. They will be displayed in order and each of them will last a certain amount of time that is configurable. There should be at least one message when publishing on the topic.
+The app subscribes to a ROS topic named ```/pepper_monitor/message``` with type of ```std_msgs/String```. It shows the user defined messages after the topic gets published from ROS. A message contains media (emoji expression, image or camera stream) or/and dialog (text, input or buttons). The data published by topic ```/pepper_monitor/message``` is a list of messages for displaying. Each message should have a unique name in order to identify each other. They will be displayed in order and each of them will last a certain amount of time that is configurable. There should be at least one message when publishing on the topic.
 
 The app will publish the message name on topic ```/pepper_monitor/status``` to ROS once the message is displayed. The message is in following format: 
  
@@ -34,7 +34,7 @@ Following is a description of the object used to define a display message.
     - For `camera`, it should be the name of a ROS topic of type `sensor_msgs/Image`. e.g. `/pepper/camera/front/image_raw`
 - `dialog` -- A object for displaying text, input or buttons.
   - `text` -- A text message. 
-  - `input` -- Set to `True` for showing a input box. The input value will be sent to ROS as a feedback message with the name of current message.
+  - `input` -- Set to `True` to enable a input box. The input value will be sent to ROS as a feedback message with the name of current message.
   - `buttons` -- A list of objects that define buttons. The object has following attributes:
     - `color`: Available colors: *red*, *blue* and *green*. 
     - `label`: Label of the button
