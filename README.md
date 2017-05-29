@@ -27,18 +27,18 @@ Following is a description of the object used to define a display message.
 - `layout` -- Display layout. Only matters when showing both media and dialog. Use `column` to place media on top of the dialog. Use `row` to put media on the left and dialog on the right. Defaults to `column`.
 - `timeout` -- How long will this message last in second. Defaults to 60. 
 - `media` -- A object for displaying graphical message:
-  - `type` -- `image`, `emoji` or `camera`.
-  - `src` -- Source of the graphical message: 
-    - For `image`, it should be the name of the image file (with extension) in `/home/nao/monitor/assets/images/`. Add new images if needed to this directory via `scp` or any SFTP client.
-    - For `emoji`, there are 13 animated smiley expressions available: *angry*, *applaud*, *bye*, *complacent*, *delicious*, *disappointed*, *giggle*, *kiss*, *laugh*, *love*, *sad*, *shock* and *shy*
-    - For `camera`, it should be the name of a ROS topic of type `sensor_msgs/Image`. e.g. `/pepper/camera/front/image_raw`
+    - `type` -- `image`, `emoji` or `camera`.
+    - `src` -- Source of the graphical message: 
+        - For `image`, it should be the name of the image file (with extension) in `/home/nao/monitor/assets/images/`. Add new images if needed to this directory via `scp` or any SFTP client.
+        - For `emoji`, there are 13 animated smiley expressions available: *angry*, *applaud*, *bye*, *complacent*, *delicious*, *disappointed*, *giggle*, *kiss*, *laugh*, *love*, *sad*, *shock* and *shy*
+        - For `camera`, it should be the name of a ROS topic of type `sensor_msgs/Image`. e.g. `/pepper/camera/front/image_raw`
 - `dialog` -- A object for displaying text, input or buttons.
-  - `text` -- A text message. 
-  - `input` -- Set to `True` to enable a input box. The input value will be sent to ROS as a feedback message with the name of current message.
-  - `buttons` -- A list of objects that define buttons. The object has following attributes:
-    - `color`: Available colors: *red*, *blue* and *green*. 
-    - `label`: Label of the button
-    - `value`: When button is clicked, this will be sent to ROS as a feedback message with the name of current message.
+    - `text` -- A text message. 
+    - `input` -- Set to `True` to enable a input box. The input value will be sent to ROS as a feedback message with the name of current message.
+    - `buttons` -- A list of objects that define buttons. The object has following attributes:
+        - `color`: Available colors: *red*, *blue* and *green*. 
+        - `label`: Label of the button
+        - `value`: When button is clicked, this will be sent to ROS as a feedback message with the name of current message.
  
 Before publishing the display messages to monitor app, in your python program, you need to use `json` module to stringify a python list:
 ```python
