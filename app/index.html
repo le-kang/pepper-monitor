@@ -1,0 +1,72 @@
+<!doctype html>
+<html ng-app="pepperMonitor">
+<head>
+  <title>Pepper Monitor</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="author" content="Le Kang">
+  <meta name="viewport" content="width=1280, user-scalable=no"/>
+
+  <!-- build:css(app) styles/vendor.css -->
+  <!-- bower:css -->
+  <!-- run `gulp inject` to automatically populate bower styles dependencies -->
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css({.tmp/serve,app}) styles/app.css -->
+  <!-- inject:css -->
+  <!-- css files will be automatically insert here -->
+  <!-- endinject -->
+  <!-- endbuild -->
+</head>
+
+<body layout="column" ng-cloak ng-controller="AppController as monitor">
+<!--[if lt IE 10]>
+<p class="browsehappy">
+  You are using an <strong>outdated</strong> browser.
+  Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
+</p>
+<![endif]-->
+
+<md-content flex ng-class="{interactive: monitor.message.name}" layout="{{ monitor.message.layout }}" layout-align="center center">
+  <div id="media" flex ng-if="monitor.message.media" ng-switch="monitor.message.media.type"
+       layout="column" layout-align="center center" class="animate-wrapper">
+    <img ng-switch-when="emoji" ng-src="/assets/animated-emoji/{{ monitor.message.media.src }}.gif">
+    <img ng-switch-when="image" ng-src="/assets/images/{{ monitor.message.media.src }}">
+    <img ng-switch-when="camera" ng-src="http://198.18.0.1:8080/stream?topic={{ monitor.message.media.src }}">
+  </div>
+  <div id="dialog" ng-if="monitor.message.dialog" layout="column"
+       layout-align="{{ monitor.message.media && monitor.layout == 'column' ? 'start' : 'center' }} center">
+    <p ng-if="monitor.message.dialog.text" data-fittext data-fittext-min="48" data-fittext-max="80">
+      {{ monitor.message.dialog.text }}
+    </p>
+    <div ng-if="monitor.message.dialog.input" layout="row">
+      <input type="text" flex ng-model="monitor.inputValue">
+      <md-button class="md-raised submit" ng-click="monitor.publish(monitor.message.name, monitor.inputValue)">Submit</md-button>
+    </div>
+    <div ng-if="monitor.message.dialog.buttons" layout="row" layout-wrap>
+      <md-button ng-repeat="button in monitor.message.dialog.buttons" class="md-raised md-{{ button.style }}"
+                 ng-click="monitor.publish(monitor.message.name, button.value)">
+        {{  button.label }}
+      </md-button>
+    </div>
+  </div>
+</md-content>
+
+<!-- build:js(app) scripts/vendor.js -->
+<!-- bower:js -->
+<!-- run `gulp inject` to automatically populate bower script dependencies -->
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js({.tmp/serve,app}) scripts/app.js -->
+<!-- inject:js -->
+<!-- js files will be automatically insert here -->
+<!-- endinject -->
+
+<!-- inject:templates -->
+<!-- angular templates will be automatically converted in js and inserted here -->
+<!-- endinject -->
+<!-- endbuild -->
+</body>
+</html>
