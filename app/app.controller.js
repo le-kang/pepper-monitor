@@ -12,7 +12,7 @@
     vm.renderJobs = [];
     vm.message = {};
     vm.publish = publish;
-    clearMessage(true);
+    clearMessage();
 
     ros.connect('ws://198.18.0.1:9090');
 
@@ -34,7 +34,7 @@
       }
       // stop displaying last message
       job = $timeout(function() {
-        clearMessage(true);
+        clearMessage();
         $rootScope.$apply()
       }, timeout);
       vm.renderJobs.push(job);
@@ -69,10 +69,8 @@
       clearMessage();
     }
 
-    function clearMessage(clearAll) {
-      if (clearAll) {
-        vm.message.name = null;
-      }
+    function clearMessage() {
+      vm.message.name = null;
       vm.message.layout = 'column';
       vm.message.media = null;
       vm.message.dialog = null;

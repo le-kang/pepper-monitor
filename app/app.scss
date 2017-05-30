@@ -32,12 +32,16 @@ md-content {
     background: url('/assets/images/internal/background.jpg') no-repeat fixed center center / cover !important;
   }
 
+  &.ng-enter {
+    animation: slideInDown 1s;
+  }
+
+  &.ng-leave {
+    animation: slideOutDown 1s;
+  }
+
   #media {
     padding: 15px;
-
-    &.ng-enter {
-      animation: slideInDown 1s;
-    }
 
     img {
       max-height: 100%;
@@ -50,10 +54,6 @@ md-content {
   #dialog {
     width: 100%;
     padding: 15px;
-
-    &.ng-enter {
-      animation: slideInDown 1s;
-    }
 
     p {
       max-height: 500px;
