@@ -60,3 +60,77 @@ rospy.init_node('pepper_monitor')
 status_sub = rospy.Subscriber('pepper_monitor/status', String, callback)
 feedback_sub = rospy.Subscriber('pepper_monitor/feedback', String, callback)
 ```
+
+## Examples
+
+- Display a "laugh" emoji expression for 5 seconds followed by a "bye" emoji expression which lasts for 3 seconds:
+
+    ```python
+    messages = [
+        {
+            'name': 'laugh',
+            'media': {
+                'type': 'emoji',
+                'src': 'laugh'
+            },
+            'timeout': 5
+        },
+        {
+            'name': 'bye',
+            'media': {
+                'type': 'emoji',
+                'src': 'bye'
+            },
+            'timeout': 3
+        }
+    ]
+    ```
+- Display a dialog to ask name with an input (it will last for 60 seconds since no timeout is configured):
+    ```python
+    messages = [
+        {
+            'name': 'person_name',
+            'dialog': {
+                'text': 'What is your name?',
+                'input': 'True'
+            }
+        }
+    ]
+    ```
+- Display a dialog with buttons. In this example, click "YES" button will send a JSON object `{"name":"remember_face","value":1}` in string format to ROS on topic `/pepper_monitor/feedback`:
+    ```python
+    messages = [
+        {
+            'name': 'remember_face',
+            'dialog': {
+                'text': 'Can I remember your face?',
+                'buttons': [
+                    {
+                        'color': 'blue',
+                        'label': 'Yes',
+                        'value': 1
+                    },
+                    {
+                        'color': 'red',
+                        'label': 'No',
+                        'value': 0
+                    }
+                ]
+            },
+            'timeout': 20
+        }
+    ]
+    ```
+- Display a camera stream for a long time (5 minutes): 
+    ```python
+    message = [
+        {
+            'name': 'top_camera',
+            'media': {
+                'type': 'camera',
+                'src': '/pepper/camera/front/image_raw'
+            },
+            'timeout': 300
+        }
+    ]
+    ```
