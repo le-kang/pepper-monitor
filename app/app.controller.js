@@ -14,8 +14,7 @@
     vm.publish = publish;
     clearMessage();
 
-    // ros.connect('ws://198.18.0.1:9090');
-    ros.connect('ws://pepper.local:9090');
+    ros.connect('ws://198.18.0.1:9090');
 
     $rootScope.$on('pepper-message', function(event, messages) {
       if (!_.isArray(messages)) return;
