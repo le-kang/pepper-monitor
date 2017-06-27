@@ -61,7 +61,7 @@
     });
 
     function publish(messageName, value) {
-      if (!value) return;
+      if (value === '' || value === null) return;
       ros.publish('feedback', {
         name: messageName,
         value: value
