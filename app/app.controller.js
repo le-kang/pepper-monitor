@@ -72,6 +72,7 @@
     function clearMessage() {
       vm.message.name = null;
       vm.message.layout = 'column';
+      vm.message.animation = true;
       vm.message.media = null;
       vm.message.dialog = null;
       vm.inputValue = null;

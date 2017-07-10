@@ -40,6 +40,12 @@ md-content {
     animation: slideOutDown 1s;
   }
 
+  &.no-animation {
+    &.ng-enter, &.ng-leave {
+      animation: none !important;
+    }
+  }
+
   #media {
     padding: 15px;
 
