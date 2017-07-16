@@ -88,8 +88,9 @@ md-content {
       border-radius: 15px;
       height: 90px;
       width: 250px;
-      font-size: 50px !important;
       margin: 15px !important;
+      white-space: normal !important;
+      line-height: normal !important;
 
       &.green {
         background-color: #259b24;

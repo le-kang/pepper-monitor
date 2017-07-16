@@ -52,7 +52,7 @@
     <div ng-if="monitor.message.dialog.buttons" layout="row" layout-wrap>
       <md-button ng-repeat="button in monitor.message.dialog.buttons" class="md-raised {{ button.color }}"
                  ng-click="monitor.publish(monitor.message.name, button.value)">
-        {{  button.label }}
+        <span data-fittext data-fittext-min="20" data-fittext-max="50">{{  button.label }}</span>
       </md-button>
     </div>
   </div>
