@@ -61,13 +61,22 @@ md-content {
     width: 100%;
     padding: 15px;
 
-    p {
-      max-height: 500px;
-      margin: 20px;
-      color: #333;
-      text-align: center;
-      text-shadow: 3px 2px 0 #fff, 4px 3px 0 rgba(0,0,0,0.15);
-      white-space: pre-line;
+    div {
+      width: 95%;
+
+      &.dialog-text {
+        max-height: 500px;
+        margin: 20px;
+
+        span {
+          height: 100%;
+          display: block;
+          color: #333;
+          text-align: center;
+          text-shadow: 3px 2px 0 #fff, 4px 3px 0 rgba(0,0,0,0.15);
+          white-space: pre-line;
+        }
+      }
     }
 
     input {
@@ -107,6 +116,10 @@ md-content {
         color: rgb(255,255,255);
         background-color: rgb(255,87,34);
       }
+
+      span {
+        padding: 0 5px;
+      }
     }
   }
 
@@ -128,7 +141,7 @@ md-content {
     #media + #dialog {
       min-height: 300px;
 
-      p {
+      div.dialog-text {
         max-height: 300px;
       }
     }

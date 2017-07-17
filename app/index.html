@@ -41,13 +41,15 @@
   </div>
   <div id="dialog" ng-if="monitor.message.dialog" layout="column"
        layout-align="{{ monitor.message.media && monitor.layout == 'column' ? 'start' : 'center' }} center">
-    <p ng-if="monitor.message.dialog.text" data-fittext data-fittext-min="48" data-fittext-max="80">{{ monitor.message.dialog.text }}</p>
-    <div ng-if="monitor.message.dialog.input" layout="row">
+    <div class="dialog-text" flex ng-if="monitor.message.dialog.text" layout="column" layout-align="center center">
+      <span flex data-fittext data-fittext-min="48" data-fittext-max="80">{{ monitor.message.dialog.text }}</span>
+    </div>
+    <div class="dialog-input" ng-if="monitor.message.dialog.input" layout="row">
       <input type="text" flex ng-model="monitor.inputValue">
       <md-button class="md-raised green"
                  ng-click="monitor.publish(monitor.message.name, monitor.inputValue)">Submit</md-button>
     </div>
-    <div ng-if="monitor.message.dialog.buttons" layout="row" layout-wrap>
+    <div class="dialog-buttons" ng-if="monitor.message.dialog.buttons" layout="row" layout-wrap layout-align="center center">
       <md-button ng-repeat="button in monitor.message.dialog.buttons" class="md-raised {{ button.color }}"
                  ng-click="monitor.publish(monitor.message.name, button.value)">
         <span data-fittext data-fittext-min="20" data-fittext-max="50">{{  button.label }}</span>
