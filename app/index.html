@@ -41,8 +41,11 @@
   </div>
   <div id="dialog" ng-if="monitor.message.dialog" layout="column"
        layout-align="{{ monitor.message.media && monitor.layout == 'column' ? 'start' : 'center' }} center">
+    <div class="dialog-template" flex ng-if="monitor.message.dialog.template" layout="column" layout-align="center center">
+      <div class="template" dynamic-template monitor="monitor"></div>
+    </div>
     <div class="dialog-text" flex ng-if="monitor.message.dialog.text" layout="column" layout-align="center center">
-      <div ng-bind-html="monitor.preprocessText(monitor.message.dialog.text)"></div>
+      <div class="text" ng-bind-html="monitor.preprocessText(monitor.message.dialog.text)"></div>
     </div>
     <div class="dialog-input" ng-if="monitor.message.dialog.input" layout="row">
       <input type="text" flex ng-model="monitor.inputValue">

@@ -64,61 +64,65 @@ md-content {
     width: 100%;
     padding: 25px;
 
-    div {
-      &.dialog-text {
-        max-height: 500px;
+    .dialog-template, .dialog-text, .dialog-input, .dialog-buttons {
+      max-height: 600px;
+      width: 100%;
 
-        div {
-          margin: 15px;
-          font-size: 48px;
-          color: #333;
-          text-align: center;
-          text-shadow: 3px 2px 0 #fff, 4px 3px 0 rgba(0,0,0,0.15);
-          white-space: pre-line;
+      .template {
+        width: 100%;
+      }
+
+      .text {
+        margin: 15px;
+        font-size: 48px;
+        color: #333;
+        text-align: center;
+        text-shadow: 3px 2px 0 #fff, 4px 3px 0 rgba(0,0,0,0.15);
+        white-space: pre-line;
+      }
+
+      input {
+        height: 90px;
+        padding: 10px;
+        margin: 15px;
+        border: 2px solid #ccc;
+        border-radius: 15px;
+        background-color: #fff;
+        font-size: 50px;
+
+        &:focus {
+          outline: none;
+          border-color: #FF7052;
         }
       }
-    }
 
-    input {
-      height: 90px;
-      padding: 10px;
-      margin: 15px;
-      border: 2px solid #ccc;
-      border-radius: 15px;
-      background-color: #fff;
-      font-size: 50px;
+      button {
+        border-radius: 15px;
+        height: 90px;
+        width: 250px;
+        margin: 15px !important;
+        font-size: 50px;
+        white-space: normal !important;
+        line-height: normal !important;
 
-      &:focus {
-        outline: none;
-        border-color: #FF7052;
-      }
-    }
+        &.green {
+          background-color: #259b24;
+          color: #FFF;
+        }
 
-    button {
-      border-radius: 15px;
-      height: 90px;
-      width: 250px;
-      margin: 15px !important;
-      white-space: normal !important;
-      line-height: normal !important;
+        &.blue {
+          color: rgba(255, 255, 255, 0.87);
+          background-color: rgb(16, 108, 200);
+        }
 
-      &.green {
-        background-color: #259b24;
-        color: #FFF;
-      }
+        &.red {
+          color: rgb(255,255,255);
+          background-color: rgb(255,87,34);
+        }
 
-      &.blue {
-        color: rgba(255, 255, 255, 0.87);
-        background-color: rgb(16, 108, 200);
-      }
-
-      &.red {
-        color: rgb(255,255,255);
-        background-color: rgb(255,87,34);
-      }
-
-      span {
-        padding: 0 5px;
+        span {
+          padding: 0 5px;
+        }
       }
     }
   }
