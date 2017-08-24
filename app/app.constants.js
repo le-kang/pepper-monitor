@@ -1,4 +1,4 @@
-/* global ROSLIB:false, malarkey:false */
+/* global ROSLIB:false, malarkey:false, katex:false */
 (function() {
   'use strict';
 
@@ -7,5 +7,6 @@
     .constant('_', window._)
     .constant('ROSLIB', ROSLIB)
     .constant('malarkey', malarkey)
+    .constant('katex', katex)
 
 })();

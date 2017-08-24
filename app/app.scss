@@ -47,9 +47,12 @@ md-content {
   }
 
   #media {
-    padding: 15px;
+    width: 100%;
+    padding: 25px;
 
     img {
+      display: block;
+      object-fit: contain;
       max-height: 100%;
       max-width: 100%;
       height: auto;
@@ -59,18 +62,15 @@ md-content {
 
   #dialog {
     width: 100%;
-    padding: 15px;
+    padding: 25px;
 
     div {
-      width: 95%;
-
       &.dialog-text {
         max-height: 500px;
-        margin: 20px;
 
-        span {
-          height: 100%;
-          display: block;
+        div {
+          margin: 15px;
+          font-size: 48px;
           color: #333;
           text-align: center;
           text-shadow: 3px 2px 0 #fff, 4px 3px 0 rgba(0,0,0,0.15);
@@ -139,11 +139,7 @@ md-content {
     }
 
     #media + #dialog {
-      min-height: 300px;
-
-      div.dialog-text {
-        max-height: 300px;
-      }
+      min-height: 200px;
     }
   }
 
@@ -156,6 +152,7 @@ md-content {
         min-width: 500px !important;
       }
     }
+
     #dialog {
       width: 700px;
       height: 800px;

@@ -48,6 +48,16 @@ gulp.task('styles', function() {
   return buildStyles();
 });
 
+gulp.task('katex-fonts', function() {
+  return gulp.src('app/bower_components/katex/dist/fonts/**/*')
+    .pipe(gulp.dest('dist/styles/fonts'));
+});
+
+gulp.task('katex-images', function() {
+  return gulp.src('app/bower_components/katex/dist/images/**/*')
+    .pipe(gulp.dest('dist/styles/images'));
+});
+
 /**
  * Inject Task
  */
@@ -152,7 +162,7 @@ gulp.task('serve', ['watch'], function() {
 /**
  * Build Task
  */
-gulp.task('build', ['html', 'fonts', 'other']);
+gulp.task('build', ['html', 'fonts', 'other', 'katex-fonts', 'katex-images']);
 
 /**
  * Clean Task
