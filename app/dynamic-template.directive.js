@@ -17,7 +17,7 @@
     return directive;
 
     function link(scope, el) {
-      el.html(scope.monitor.message.dialog.template);
+      el.html(scope.monitor.message.dialog.text);
       $compile(el.contents())(scope)
     }
   }

@@ -6,13 +6,12 @@
     .controller('AppController', AppController);
 
   /** @ngIngect */
-  function AppController($rootScope, $sce, katex, ros, $window, _, $timeout, $mdDialog, $mdToast) {
+  function AppController($rootScope, ros, $window, _, $timeout, $mdDialog, $mdToast) {
     var vm = this;
     var DEFAULT_TIMEOUT = 60;
     vm.renderJobs = [];
     vm.message = {};
     vm.publish = publish;
-    vm.preprocessText = preprocessText;
     clearMessage();
 
     ros.connect('ws://198.18.0.1:9090');
@@ -60,18 +59,6 @@
         });
       });
     });
-
-    function preprocessText(string) {
-      string = string.replace(/[\n]/g,'\\n');
-      string = string.replace(/[\r]/g,'\\r');
-      string = string.replace(/[\t]/g,'\\t');
-      string = string.replace(/[\b]/g,'\\b');
-      string = string.replace(/[\f]/g,'\\f');
-      var text = string.replace(/<katex>(.*?)<\/katex>/g, function(match, content) {
-        return katex.renderToString(content)
-      });
-      return $sce.trustAsHtml(text);
-    }
     
     function publish(messageName, value) {
       if (value === '' || value === null) return;

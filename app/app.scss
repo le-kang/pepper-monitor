@@ -64,19 +64,14 @@ md-content {
     width: 100%;
     padding: 25px;
 
-    .dialog-template, .dialog-text, .dialog-input, .dialog-buttons {
+    .dialog-text, .dialog-input, .dialog-buttons {
       max-height: 600px;
       width: 100%;
 
-      .template {
+      & > div {
         width: 100%;
-      }
-
-      .text {
-        margin: 15px;
-        font-size: 48px;
+        font-size: 50px;
         color: #333;
-        text-align: center;
         text-shadow: 3px 2px 0 #fff, 4px 3px 0 rgba(0,0,0,0.15);
         white-space: pre-line;
       }
