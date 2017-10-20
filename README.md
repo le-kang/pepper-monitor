@@ -1,1 +1,212 @@
-Please see the [wiki](https://gitlab.com/uts-unleashed/pepper-monitor/wikis/home)
+# Pepper Monitor
+
+## Change Log
+
+### 0.8.0
+
+- [CHANGED] The display content should be a dict with keys `id` and `messages`. `id` is a UUID for identifying the content. `messages` is a list of object to define a display message. See the [Usage](##Usage) for further info.
+- [CHANGED] Button click will trigger the next message (if there is) to be displayed immediately rather than waiting for the previous message timeout.
+- [NEW] Dialog text can be a html snippet. Therefore, inline style can be used to control font size etc. If the snippet featured with angular component, it also can be complied.
+- [NEW] Image can be configured to be displayed in full-screen mode.
+
+## Usage
+
+The monitor app is only available at pepper's tablet. There is no external access.
+
+The app subscribes to a ROS topic named ```/pepper_monitor/message``` with type of ```std_msgs/String```. It shows the user defined display content after the topic gets published from ROS. A display content may contain a list of message featured with media (emoji expression, image or camera stream) or/and dialog (text, input or buttons). The data published by topic ```/pepper_monitor/message``` is a list of messages for displaying. The entire content will be given a UUID. Each message should have a unique name in order to identify each other. They will be displayed in order and each of them will last a certain amount of time that is configurable. There should be at least one message when publishing on the topic.
+
+The app will publish the message name on topic ```/pepper_monitor/status``` to ROS once the message is displayed. The message is in following format:
+
+```json
+{
+  "id": "content UUID",
+  "status": "displaying | finished",
+  "current": "the name of the current displaying message"
+}
+```
+
+If the displayed message enables input or buttons, it will also publish a feedback with the message name and a value comes from the input or button on topic ```/pepper_monitor/feedback```. The message is in following format:
+
+```json
+{
+  "id": "content UUID"
+  "name": "name of the message",
+  "value": "a value from an input or button"
+}
+```
+
+Following is a description of the object used to define a display message.
+
+- `name` -- Name of the message. Will be used for identify feedback or status sent from monitor app.
+- `layout` -- Display layout. Only matters when showing both media and dialog. Use `column` to place media on top of the dialog. Use `row` to put media on the left and dialog on the right. Defaults to `column`.
+- `timeout` -- How long will this message last in second. Defaults to 60.
+- `animation` -- Enable/disable the sliding animation when display message. Defaults to `True`
+- `media` -- An object for displaying graphical message:
+    - `type` -- `image`, `emoji`, `base64` or `camera`.
+    - `src` -- Source of the graphical message:
+        - For `image`, it should be the name of the image file (with extension) in `/home/nao/monitor/assets/images/`. Add new images if needed to this directory via `scp` or any SFTP client.
+        - For `emoji`, there are 13 animated smiley expressions available: *angry*, *applaud*, *bye*, *complacent*, *delicious*, *disappointed*, *giggle*, *kiss*, *laugh*, *love*, *sad*, *shock* and *shy*
+        - For `base64`, it should be the base64 encoded string from your image. By default, the extension for the image is 'jpg', however, you can customise it by adding a new key `ext` and specify the type of the image (e.g. .gif, .png, .jpeg etc)
+        - For `camera`, it should be the name of a ROS topic of type `sensor_msgs/Image`. e.g. `/pepper/camera/front/image_raw`
+    - `ext` -- Only needed when you use base64 encoded string to display image
+    - `full` -- Whether display the image in full-screen mode. Defaults to `False`
+- `dialog` -- An object for displaying text, input or buttons.
+    - `text` -- A text message.
+    - `input` -- Set to `True` to enable a input box. The input value will be sent to ROS as a feedback message with the name of current message.
+    - `buttons` -- A list of objects that define buttons. The object has following attributes:
+        - `color`: Available colors: *red*, *blue* and *green*.
+        - `label`: Label of the button
+        - `value`: When button is clicked, this will be sent to ROS as a feedback message with the name of current message.
+
+Before publishing the display messages to monitor app, in your python program, you need to use `json` module to stringify a python list:
+```python
+import rospy
+from std_msgs.msg import String
+import json
+import uuid
+
+rospy.init_node('pepper_monitor')
+pub = rospy.Publisher('pepper_monitor/message', String, queue_size=1)
+id = str(uuid.uuid4())
+messages = [...] # a list of message dicts
+content = {
+    'id': id,
+    'messages': messages
+}
+pub.publish(json.dumps(content))
+```
+
+Every display content should have an id generated by `uuid` module. This is for tracing the status of the display content.
+
+Before processing topic published from monitor app, in your python program, you need to deserialize topic message to a python object:
+```python
+def callback(message):
+    rospy.loginfo(json.loads(message.data))
+
+rospy.init_node('pepper_monitor')
+status_sub = rospy.Subscriber('pepper_monitor/status', String, callback)
+feedback_sub = rospy.Subscriber('pepper_monitor/feedback', String, callback)
+```
+
+### Use without ROS
+
+Make sure you have ```websocket``` python package installed:
+
+```bash
+sudo pip install websocket
+```
+
+Then you can send ROS message through websocket client by using rosbridge protocal:
+
+```python
+import json
+import websocket
+import uuid
+
+ws = websocket.create_connection('ws://robot_ip:9090')
+
+message = [
+    {
+        'name': 'test'
+        'dialog': {
+            'text': 'Hello, world!'
+        },
+        'timeout': 20,
+        'animation': True
+    }
+]
+
+content = {
+    'id': str(uuid.uuid4())
+    'messages': messages
+}
+
+ws.send(json.dumps({
+    'op': 'publish',
+    'topic': '/pepper_monitor/message',
+    'msg': {
+        'data': json.dumps(content)
+    }
+}))
+```
+
+## Examples
+
+- Display a "laugh" emoji expression for 5 seconds followed by a "bye" emoji expression which lasts for 3 seconds:
+
+    ```python
+    messages = [
+        {
+            'name': 'laugh',
+            'media': {
+                'type': 'emoji',
+                'src': 'laugh'
+            },
+            'timeout': 5
+        },
+        {
+            'name': 'bye',
+            'media': {
+                'type': 'emoji',
+                'src': 'bye'
+            },
+            'timeout': 3
+        }
+    ]
+    ```
+![emoji](/docs/emoji.gif)
+- Display a dialog to ask name with an input (it will last for 60 seconds since no timeout is configured):
+
+    ```python
+    messages = [
+        {
+            'name': 'person_name',
+            'dialog': {
+                'text': 'What is your name?',
+                'input': 'True'
+            }
+        }
+    ]
+    ```
+![name](/docs/name.gif)
+- Display a dialog with buttons. In this example, click "YES" button will send a JSON object `{"name":"remember_face","value":1}` in string format to ROS on topic `/pepper_monitor/feedback`:
+
+    ```python
+    messages = [
+        {
+            'name': 'remember_face',
+            'dialog': {
+                'text': 'Can I remember your face?',
+                'buttons': [
+                    {
+                        'color': 'blue',
+                        'label': 'Yes',
+                        'value': 1
+                    },
+                    {
+                        'color': 'red',
+                        'label': 'No',
+                        'value': 0
+                    }
+                ]
+            },
+            'timeout': 20
+        }
+    ]
+    ```
+![remember](/docs/remember.gif)
+- Display a camera stream for a long time (5 minutes):
+
+    ```python
+    message = [
+        {
+            'name': 'top_camera',
+            'media': {
+                'type': 'camera',
+                'src': '/pepper/camera/front/image_raw'
+            },
+            'timeout': 300
+        }
+    ]
+    ```
+![camera](/docs/camera.gif)

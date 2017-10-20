@@ -140,7 +140,7 @@ gulp.task('other', function() {
     return file.stat.isFile();
   });
 
-  return gulp.src(['app/**/*', '!app/bower_components/**/*', '!**/*.{html,css,js,scss}', '*.sh', '*.py'])
+  return gulp.src(['app/**/*', '!app/bower_components/**/*', '!doc/**/*', '!**/*.{html,css,js,scss}', '*.sh', '*.py'])
     .pipe(fileFilter)
     .pipe(gulp.dest('dist/'))
 });

@@ -10,34 +10,35 @@
     var vm = this;
     var DEFAULT_TIMEOUT = 60;
     vm.renderJobs = [];
-    vm.message = {};
+    vm.contentID = null;
+    vm.messages = [];
+    vm.message = {}; // current message
+    vm.timer = null;
     vm.publish = publish;
-    clearMessage();
+    resetMessage();
 
     ros.connect('ws://198.18.0.1:9090');
 
-    $rootScope.$on('pepper-message', function(event, messages) {
-      if (!_.isArray(messages)) return;
-      // cancel any unfinished rendering job and empty job list
-      _.forEach(vm.renderJobs, function(job) {
-        $timeout.cancel(job);
-      });
-      vm.renderJobs = [];
-      // schedule message display
-      var job;
-      var timeout = 0;
-      while (messages.length) {
-        var message = _.clone(messages.shift());
-        job = createRenderJob(message, timeout);
-        vm.renderJobs.push(job);
-        timeout += (message.timeout || DEFAULT_TIMEOUT) * 1000;
+    $rootScope.$on('pepper-message', function(event, content) {
+      // validate content
+      if (!_.isObjectLike(content)
+        || !_.has(content, 'id')
+        || !_.has(content, 'messages')
+        || !_.isArray(content['messages']))
+        return;
+      // check if currently displaying an old content
+      if (vm.contentID && vm.messages) {
+        ros.publish('status', {
+          id: vm.contentID,
+          status: 'finished'
+        });
+        resetMessage();
       }
-      // stop displaying last message
-      job = $timeout(function() {
-        clearMessage();
-        $rootScope.$apply()
-      }, timeout);
-      vm.renderJobs.push(job);
+      if (vm.timer) $timeout.cancel(vm.timer);
+      // assign new content
+      vm.contentID = content['id'];
+      vm.messages = content['messages'];
+      displayNextMessage()
     });
 
     $rootScope.$on('ros-disconnected', function() {
@@ -63,30 +64,47 @@
     function publish(messageName, value) {
       if (value === '' || value === null) return;
       ros.publish('feedback', {
+        id: vm.contentID,
         name: messageName,
         value: value
       });
-      clearMessage();
+      if (vm.timer) $timeout.cancel(vm.timer);
+      $timeout(displayNextMessage, 0);
     }
 
-    function clearMessage() {
+    function displayNextMessage() {
+      resetMessage();
+      $rootScope.$apply();
+      var next = vm.messages.shift();
+      if (!next) {
+        $timeout(function() {
+          ros.publish('status', {
+            id: vm.contentID,
+            status: 'finished'
+          });
+        }, 1000);
+        return;
+      }
+      _.assign(vm.message, next);
+      ros.publish('status', {
+        id: vm.contentID,
+        status: 'displaying',
+        current: vm.message.name
+      });
+      $rootScope.$apply();
+      var timeout = (vm.message.timeout || DEFAULT_TIMEOUT) * 1000;
+      vm.timer = $timeout(function() {
+        displayNextMessage();
+      }, timeout)
+    }
+
+    function resetMessage() {
       vm.message.name = null;
       vm.message.layout = 'column';
       vm.message.animation = true;
       vm.message.media = null;
       vm.message.dialog = null;
       vm.inputValue = null;
-    }
-
-    function createRenderJob(message, timeout) {
-      return $timeout(function() {
-        clearMessage();
-        $rootScope.$apply();
-        _.assign(vm.message, message);
-        ros.publish('status', { status: message.name });
-        $rootScope.$apply();
-        vm.renderJobs.shift();
-      }, timeout)
     }
   }
 
