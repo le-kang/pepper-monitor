@@ -4,7 +4,7 @@
 
 ### 0.8.0
 
-- [CHANGED] The display content should be a dict with keys `id` and `messages`. `id` is a UUID for identifying the content. `messages` is a list of object to define a display message. See the [Usage](##Usage) for further info.
+- [CHANGED] The display content should be a dict with keys `id` and `messages`. `id` is a UUID for identifying the content. `messages` is a list of object to define a display message. See the [Usage](#Usage) for further info.
 - [CHANGED] Button click will trigger the next message (if there is) to be displayed immediately rather than waiting for the previous message timeout.
 - [NEW] Dialog text can be a html snippet. Therefore, inline style can be used to control font size etc. If the snippet featured with angular component, it also can be complied.
 - [NEW] Image can be configured to be displayed in full-screen mode.
