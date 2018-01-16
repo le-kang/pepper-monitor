@@ -2,6 +2,9 @@
 
 ## Change Log
 
+### 0.8.1
+- [CHANGED] Remove media type `image`, use `base64` instead. All image should be converted to base64 data URI (previous just base64 encoding). Therefor, `ext` attributes in media is no longer needed.
+
 ### 0.8.0
 
 - [CHANGED] The display content should be a dict with keys `id` and `messages`. `id` is a UUID for identifying the content. `messages` is a list of object to define a display message. See the [Usage](#Usage) for further info.
@@ -42,13 +45,11 @@ Following is a description of the object used to define a display message.
 - `timeout` -- How long will this message last in second. Defaults to 60.
 - `animation` -- Enable/disable the sliding animation when display message. Defaults to `True`
 - `media` -- An object for displaying graphical message:
-    - `type` -- `image`, `emoji`, `base64` or `camera`.
+    - `type` -- `emoji`, `base64` or `camera`.
     - `src` -- Source of the graphical message:
-        - For `image`, it should be the name of the image file (with extension) in `/home/nao/monitor/assets/images/`. Add new images if needed to this directory via `scp` or any SFTP client.
         - For `emoji`, there are 13 animated smiley expressions available: *angry*, *applaud*, *bye*, *complacent*, *delicious*, *disappointed*, *giggle*, *kiss*, *laugh*, *love*, *sad*, *shock* and *shy*
-        - For `base64`, it should be the base64 encoded string from your image. By default, the extension for the image is 'jpg', however, you can customise it by adding a new key `ext` and specify the type of the image (e.g. .gif, .png, .jpeg etc)
+        - For `base64`, it should be the base64 encoded **data URI** string from your image, with `data:image/png;base64,` prepended to the encoding. Replace `png` to whatever extension of your image.
         - For `camera`, it should be the name of a ROS topic of type `sensor_msgs/Image`. e.g. `/pepper/camera/front/image_raw`
-    - `ext` -- Only needed when you use base64 encoded string to display image
     - `full` -- Whether display the image in full-screen mode. Defaults to `False`
 - `dialog` -- An object for displaying text, input or buttons.
     - `text` -- A text message.

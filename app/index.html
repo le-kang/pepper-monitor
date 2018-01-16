@@ -34,10 +34,7 @@
        layout="column" layout-align="center center">
     <img ng-switch-when="emoji" ng-src="/assets/animated-emoji/{{ monitor.message.media.src }}.gif"
          ng-class="{'full-screen': monitor.message.media.full && !monitor.message.dialog}">
-    <img ng-switch-when="image" ng-src="/assets/images/{{ monitor.message.media.src }}"
-         ng-class="{'full-screen': monitor.message.media.full && !monitor.message.dialog}">
-    <img ng-switch-when="base64"
-         ng-src="data:image/{{ monitor.message.media.ext || 'jpg' }};base64,{{ monitor.message.media.src }}"
+    <img ng-switch-when="base64" ng-src="{{ monitor.message.media.src }}"
          ng-class="{'full-screen': monitor.message.media.full && !monitor.message.dialog}">
     <img ng-switch-when="camera" class="md-whiteframe-3dp"
          ng-src="http://198.18.0.1:8080/stream?topic={{ monitor.message.media.src }}"
