@@ -32,6 +32,8 @@
             layout="{{ monitor.message.layout }}" layout-align="center center">
   <div id="media" flex ng-if="monitor.message.media" ng-switch="monitor.message.media.type"
        layout="column" layout-align="center center">
+    <img ng-switch-when="image" ng-src="/assets/images/{{ monitor.message.media.src }}"
+         ng-class="{'full-screen': monitor.message.media.full && !monitor.message.dialog}">
     <img ng-switch-when="emoji" ng-src="/assets/animated-emoji/{{ monitor.message.media.src }}.gif"
          ng-class="{'full-screen': monitor.message.media.full && !monitor.message.dialog}">
     <img ng-switch-when="base64" ng-src="{{ monitor.message.media.src }}"
