@@ -3,7 +3,7 @@
 ## Change Log
 
 ### 0.8.1
-- [CHANGED] Remove media type `image`, use `base64` instead. All image should be converted to base64 data URI (previous just base64 encoding). Therefore, `ext` attribute in media is no longer needed.
+- [CHANGED] All base64 image should be converted to base64 data URI (previous just base64 encoding). Therefore, `ext` attribute in media is no longer needed.
 
 ### 0.8.0
 
@@ -45,8 +45,9 @@ Following is a description of the object used to define a display message.
 - `timeout` -- How long will this message last in second. Defaults to 60.
 - `animation` -- Enable/disable the sliding animation when display message. Defaults to `True`
 - `media` -- An object for displaying graphical message:
-    - `type` -- `emoji`, `base64` or `camera`.
+    - `type` -- `image`, `emoji`, `base64` or `camera`.
     - `src` -- Source of the graphical message:
+        - For `image`, it should be the name of the image file (with extension) in `/home/nao/monitor/assets/images/`. Add new images if needed to this directory via `scp` or any SFTP client.
         - For `emoji`, there are 13 animated smiley expressions available: *angry*, *applaud*, *bye*, *complacent*, *delicious*, *disappointed*, *giggle*, *kiss*, *laugh*, *love*, *sad*, *shock* and *shy*
         - For `base64`, it should be the base64 encoded **data URI** string from your image, with `data:image/png;base64,` prepended to the encoding. Replace `png` to whatever extension of your image.
         - For `camera`, it should be the name of a ROS topic of type `sensor_msgs/Image`. e.g. `/pepper/camera/front/image_raw`
