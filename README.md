@@ -3,7 +3,7 @@
 ## Change Log
 
 ### 0.8.1
-- [CHANGED] Remove media type `image`, use `base64` instead. All image should be converted to base64 data URI (previous just base64 encoding). Therefor, `ext` attributes in media is no longer needed.
+- [CHANGED] Remove media type `image`, use `base64` instead. All image should be converted to base64 data URI (previous just base64 encoding). Therefore, `ext` attribute in media is no longer needed.
 
 ### 0.8.0
 
