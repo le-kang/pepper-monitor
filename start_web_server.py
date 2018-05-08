@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/tmp/gentoo/usr/bin/python
 
 import SimpleHTTPServer
 import SocketServer

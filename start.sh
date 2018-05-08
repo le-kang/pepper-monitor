@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/tmp/gentoo/bin/bash
 
 source /home/nao/.bash_profile
 
